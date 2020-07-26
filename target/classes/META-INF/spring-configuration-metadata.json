@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "shop",
+      "type": "com.angsi.shop.config.ApplicationProperties",
+      "sourceType": "com.angsi.shop.config.ApplicationProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "shop.big-shop-id",
+      "type": "java.lang.String",
+      "sourceType": "com.angsi.shop.config.ApplicationProperties"
+    }
+  ],
+  "hints": []
+}

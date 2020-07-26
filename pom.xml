@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.basic</groupId>
+        <artifactId>basic-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.angsi</groupId>
+    <artifactId>shop</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <!--directories-->
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--jvm properties-->
+        <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.basic</groupId>
+            <artifactId>basic-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vmcshop.mall</groupId>
+            <artifactId>mall-common</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.basic</groupId>
+            <artifactId>basic-starter-dubbo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem-spring-web</artifactId>
+            <version>0.25.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jool</artifactId>
+            <version>0.9.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>2.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-core</artifactId>
+            <version>3.8.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.angsi</groupId>
+            <artifactId>shop-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qianbao.wx</groupId>
+            <artifactId>weixin-miniapp-client</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qianbao.wx</groupId>
+            <artifactId>weixin-mp-client</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot </groupId>
+            <artifactId>spring-boot-configuration-processor </artifactId>
+            <optional> true </optional>
+        </dependency>
+        <dependency>
+            <groupId>com.vmcshop</groupId>
+            <artifactId>zxing</artifactId>
+            <version>1.0.12</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>angsi-release</id>
+            <url>https://maven.vmcshop.com/repository/angsi-release/</url>
+        </repository>
+        <repository>
+            <id>angsi-snapshot</id>
+            <url>https://maven.vmcshop.com/repository/angsi-snapshot/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>angsi-release</id>
+            <url>https://maven.vmcshop.com/repository/angsi-release/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>angsi-snapshot</id>
+            <url>https://maven.vmcshop.com/repository/angsi-snapshot/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.12</version>
+                <configuration>
+                    <imageName>repos.vmcshop.com/k8s-angsi/${project.name}</imageName>
+                    <imageTags>
+                    </imageTags>
+                    <baseImage>openjdk:8-jdk</baseImage>
+                    <entryPoint>["/bin/sh", "/start.sh"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.basedir}/</directory>
+                            <include>start.sh</include>
+                        </resource>
+                    </resources>
+                    <runs>
+                        <run>mv ${project.build.finalName}.jar app.jar</run>
+                    </runs>
+                    <serverId>docker-registry</serverId>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.4.12</version>
+                        <configuration>
+                            <imageName>repos.vmcshop.com/k8s-angsi/${project.name}</imageName>
+                            <imageTags>
+                            </imageTags>
+                            <baseImage>openjdk:8-jdk</baseImage>
+                            <entryPoint>["/bin/sh", "/start_dev.sh"]</entryPoint>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.jar</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/</directory>
+                                    <include>start_dev.sh</include>
+                                </resource>
+                            </resources>
+                            <runs>
+                                <run>mv ${project.build.finalName}.jar app.jar</run>
+                            </runs>
+
+                            <serverId>docker-registry</serverId>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>uat</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.4.12</version>
+                        <configuration>
+                            <imageName>repos.vmcshop.com/k8s-angsiuat/${project.name}</imageName>
+                            <imageTags>
+                            </imageTags>
+                            <baseImage>openjdk:8-jdk</baseImage>
+                            <entryPoint>["/bin/sh", "/start_uat.sh"]</entryPoint>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.jar</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/</directory>
+                                    <include>start_uat.sh</include>
+                                </resource>
+                            </resources>
+                            <runs>
+                                <run>mv ${project.build.finalName}.jar app.jar</run>
+                            </runs>
+
+                            <serverId>docker-registry</serverId>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

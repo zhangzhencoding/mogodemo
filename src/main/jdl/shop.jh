@@ -1,0 +1,186 @@
+  /**  店铺*/
+entity Shop{
+
+            /**  主键  */
+            id Long,
+
+            /**  商品ID(对应tao_id)  */
+            goodsId Integer,
+
+            /**  淘宝标题  */
+            title String,
+
+            /**  商品主图  */
+            pictUrl String,
+
+            /**  是否天猫，0是淘宝，1是天猫  */
+            userType Integer,
+
+            /**  卖家ID  */
+            sellerId String,
+
+            /**  商品描述分  */
+            shopDsr String,
+
+            /** 月销量  */
+            monthSales Long,
+
+            /**  商品原价（元）  */
+            originPrice BigDecimal,
+
+            /**  券后价（元  */
+            quanhouJiage BigDecimal,
+
+            /**  佣金更新时间 */
+            dateTimeYongji Instant,
+
+            /** 叶子类目id */
+            categoryId String,
+
+            /** 叶子类目name  */
+            categoryName String,
+
+            /** 一级类目id  */
+            levelOneCategoryId String,
+
+            /** 一级类目name */
+            levelOneCategoryName String,
+
+            /**  佣金类型  */
+            yongjinType String,
+
+            /**  优惠券ID  */
+            couponId String,
+
+            /**  优惠券开始时间 */
+            couponStartTime Instant,
+
+            /**  优惠券结束时间  */
+            couponEndTime Instant,
+
+            /**  优惠券金额  */
+            couponInfoMoney BigDecimal,
+
+            /**  优惠券总数量  */
+            couponTotalCount Long,
+
+            /** 优惠券剩余数量  */
+            couponRemainCount Long,
+
+            /**  优惠券信息  */
+            couponInfo String,
+
+            /**  是否聚划算，1是  */
+            juhuasuan String,
+
+            /**  是否淘抢购  */
+            taoqianggou String,
+
+            /**  是否海淘，1是 */
+            haitao String,
+
+            /**  是否极有家，1是  */
+            jiyoujia String,
+
+            /**  是否极有家，1是  */
+            jinpaimaijia String,
+
+            /**  是否精选品牌，1是 */
+            pinpai String,
+
+            /**  品牌名称 */
+            pinpaiName String,
+
+            /** 是否有运费险，1有  */
+            yunfeixian String,
+
+            /**  卖家昵称  */
+            nick String,
+
+            /** 商品小图列表 */
+            smallImages String,
+
+            /** 商品白底图  */
+            whiteImage String,
+
+            /** 商品长标题  */
+            taoTitle String,
+
+            /**  宝贝所在地  */
+            provcity String,
+
+            /**  店铺名称  */
+            shopTitle String,
+
+            /**  视频地址  */
+            zhiboUrl String,
+
+            /**  宝贝描述分(score1) */
+            goodsScore String,
+
+            /**  卖家服务分(score2) */
+            sellerServiceScore String,
+
+            /**  物流服务分(score3)  */
+            logisticsScore String,
+
+            /**  店铺等级（1-20），一星 二星 三星 四星 五星 一钻 二钻 三钻 四钻 五钻 一皇冠 二皇冠 三皇冠 四皇冠 五皇冠  一金冠 二金冠 三金冠 四金冠 五金冠 */
+            creditLevel String,
+
+            /** 店铺logo */
+            shopIcon String,
+
+            /** 图文详情图片地址  */
+            pcDescContent String,
+
+            /**  商品url  */
+            itemUrl String,
+
+
+            /**  返佣金额  */
+            commissionAmount String,
+
+            /**  佣金比率(tkrate3)  */
+            commissionRate String,
+
+            /** 简介（jianjie） */
+            recommendDesc String,
+
+            /**  分类ID  */
+            typeOneId Integer,
+
+            /**   1表示显示2表示隐藏  */
+            status Integer ,
+
+            /**  淘宝网页实时总销量  */
+            sellCount Integer,
+
+            /**  评论数量  */
+            commentCount Long,
+
+            /**  收藏数量  */
+            favcount Long,
+
+            /**  关联类目二级id  */
+            tataokeId Long,
+
+            /**  创建时间 */
+            createTime Instant,
+
+            /**  更新时间 */
+            updateTime Instant
+}
+
+
+paginate * with infinite-scroll
+paginate * with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
+

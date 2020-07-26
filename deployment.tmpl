@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{APPNAME}}
+  namespace: {{NAMESPACE}}
+spec:
+  ports:
+  - protocol: TCP
+    port: {{PORT}}
+    targetPort: {{PORT}}
+  selector:
+    app: {{APPNAME}}
+    tier: {{FRONTBACK}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{APPNAME}}
+  namespace: {{NAMESPACE}}
+spec:
+  selector:
+    matchLabels:
+      app: {{APPNAME}}
+      tier: {{FRONTBACK}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{APPNAME}}
+        tier: {{FRONTBACK}}
+    spec:
+      volumes:
+        - name: shared-data
+          emptyDir: {}
+      containers:
+        - name: {{APPNAME}}
+          image: repos.vmcshop.com/k8s-{{NAMESPACE}}/{{APPNAME}}
+          resources:
+            limits:
+              memory: "1Gi"
+          ports:
+            - name: {{APPNAME}}
+              containerPort: {{PORT}}
+          volumeMounts:
+            - name: shared-data
+              mountPath: /logs
+
+      imagePullSecrets:
+        - name: nexus-secret
